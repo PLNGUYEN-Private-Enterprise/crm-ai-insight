@@ -1,0 +1,219 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Every color pair used for text meets WCAG AA (4.5:1) in both
+ * themes; field borders meet the 3:1 non-text minimum.
+ *   sf = Salesforce Implementation   ai = n8n Flows & AI Services
+ */
+:root {
+  color-scheme: light;
+
+  --bg: #f7f7f4;
+  --surface: #ffffff;
+  --surface-2: #efefeb;
+  --ink: #0c1222;
+  --ink-2: #3a4253;
+  --muted: #5b6374;
+  --line: #e2e4e8;
+  --line-strong: #c9ced6;
+  --field: #7d8698;
+  --dot: #d3d6dc;
+
+  --sf: #1260d6;
+  --sf-soft: #e7f0fd;
+  --sf-line: #bed3f6;
+  --ai: #c92a55;
+  --ai-soft: #fceaf0;
+  --ai-line: #f3c3d1;
+  --ok: #0e7442;
+  --ok-soft: #e3f4ea;
+
+  --panel: #0c1222;
+  --panel-ink: #f3f5f9;
+  --panel-muted: #a9b1c2;
+  --panel-line: #263049;
+
+  --shadow-card: 0 1px 2px rgb(12 18 34 / 0.04), 0 8px 24px -12px rgb(12 18 34 / 0.12);
+  --shadow-float: 0 1px 2px rgb(12 18 34 / 0.05), 0 24px 60px -24px rgb(12 18 34 / 0.28);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --bg: #0a0e18;
+    --surface: #111726;
+    --surface-2: #0e1320;
+    --ink: #edf0f6;
+    --ink-2: #c3c9d6;
+    --muted: #949cae;
+    --line: #222a3b;
+    --line-strong: #34405a;
+    --field: #68748f;
+    --dot: #1e2638;
+
+    --sf: #78aeff;
+    --sf-soft: #132544;
+    --sf-line: #24406d;
+    --ai: #ff7c98;
+    --ai-soft: #2a1626;
+    --ai-line: #55253b;
+    --ok: #4ade80;
+    --ok-soft: #0f2a1d;
+
+    --panel: #121a2b;
+    --panel-ink: #f3f5f9;
+    --panel-muted: #a9b1c2;
+    --panel-line: #2a3550;
+
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -12px rgb(0 0 0 / 0.5);
+    --shadow-float: 0 1px 2px rgb(0 0 0 / 0.4), 0 24px 60px -24px rgb(0 0 0 / 0.7);
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-field: var(--field);
+  --color-sf: var(--sf);
+  --color-sf-soft: var(--sf-soft);
+  --color-sf-line: var(--sf-line);
+  --color-ai: var(--ai);
+  --color-ai-soft: var(--ai-soft);
+  --color-ai-line: var(--ai-line);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-panel: var(--panel);
+  --color-panel-ink: var(--panel-ink);
+  --color-panel-muted: var(--panel-muted);
+  --color-panel-line: var(--panel-line);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  --shadow-card: var(--shadow-card);
+  --shadow-float: var(--shadow-float);
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--sf-soft);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--sf);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@layer components {
+  .container-page {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 75rem;
+    padding-inline: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .container-page {
+      padding-inline: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
+
+  /* n8n-canvas style dot grid, faded toward the edges. */
+  .bg-dots {
+    background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse 80% 70% at 60% 40%, #000 30%, transparent 75%);
+  }
+
+  .text-gradient {
+    background: linear-gradient(95deg, var(--sf) 10%, var(--ai) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Hero "example run": steps reveal in sequence once, then rest. */
+@keyframes step-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes grow-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-step {
+    animation: step-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: var(--delay, 0s);
+  }
+
+  .animate-grow {
+    transform-origin: top;
+    animation: grow-y 0.35s ease-out both;
+    animation-delay: var(--delay, 0s);
+  }
+
+  .animate-pop {
+    animation: pop-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: var(--delay, 0s);
+  }
+}
