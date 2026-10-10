@@ -5,6 +5,11 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "crm-ai-insight",
   "main": ".open-next/worker.js",
+  // Wrangler builds the app before every deploy, version upload and dev session, so the
+  // Workers Builds defaults (no build command, `npx wrangler deploy`) produce a complete Worker.
+  "build": {
+    "command": "npm run build:worker"
+  },
   "compatibility_date": "2025-04-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {

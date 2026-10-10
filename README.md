@@ -21,21 +21,22 @@ npm run preview    # production build running in the Workers runtime (workerd) a
 
 ## Deploying
 
+`wrangler.jsonc` has a custom build (`npm run build:worker`) that Wrangler runs before every
+`wrangler deploy`, `wrangler versions upload` and `wrangler dev`. It builds the app with OpenNext and copies
+the prerendered pages into Workers static assets (the read-only static-assets incremental cache configured in
+`open-next.config.ts`), so pages are served without rendering.
+
+That means the **Workers Builds defaults work as-is** — no build command, deploy command `npx wrangler deploy`,
+non-production branches `npx wrangler versions upload` — and so do `npm run deploy` / `npm run upload`.
+A merge to the production branch builds and deploys the site.
+
 ```bash
-npm run deploy     # opennextjs-cloudflare build && opennextjs-cloudflare deploy
+npm run deploy     # wrangler deploy (builds first)
+npm run upload     # wrangler versions upload — a preview version without promoting it
 ```
 
-For Cloudflare **Workers Builds** (Git integration), set:
-
-| Setting                         | Value            |
-| ------------------------------- | ---------------- |
-| Build command                   | _(leave empty)_  |
-| Deploy command                  | `npm run deploy` |
-| Non-production branch deploy    | `npm run upload` |
-
-`opennextjs-cloudflare deploy` copies the prerendered pages into Workers static assets (the read-only
-static-assets incremental cache configured in `open-next.config.ts`), so pages are served without rendering.
-A bare `wrangler deploy` after `opennextjs-cloudflare build` still works, but pages are then rendered on every request.
+Use these (or plain `wrangler`) rather than `opennextjs-cloudflare deploy|preview|upload`: those call Wrangler,
+which would run the custom build a second time.
 
 > **Next.js is pinned to 16.3.8.** Next 16.4.0 loads `server/preview-props.json` at runtime, which
 > `@opennextjs/cloudflare` 1.20.10 does not inline, so every request fails with
